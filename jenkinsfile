@@ -1,0 +1,136 @@
+
+jsl = library(
+  identifier: 'customLib@master',
+  retriever: modernSCM(
+    [
+      $class: 'GitSCMSource',
+      remote: 'https://bitbucket.aws.na.nissancloud.biz/scm/devopscoe/jenkinssharedlibs.git',
+      credentialsId: 'BitBucket-Admin'
+    ]
+  )
+) 
+
+NSLMaven = jsl.com.ndi.jenkinslibs.MavenStep.new(this)
+NSLSonar = jsl.com.ndi.jenkinslibs.SonarStep.new(this)
+
+
+properties([
+  pipelineTriggers(
+ 
+  [
+   [$class: 'GenericTrigger',
+     genericVariables:[
+     [
+      key: 'refsb',
+      value: '$.changes[0].ref.id',
+      expressionType: 'JSONPath',
+      regexpFilter: '^(refs/heads/|refs/remotes/origin/)'
+     ],
+     [
+      key: 'refsb',
+      value: '$.pullRequest.toRef.id',
+      expressionType: 'JSONPath',
+      regexpFilter: '^(refs/heads/|refs/remotes/origin/)'
+     ]
+     ],
+    causeString: 'Triggered on $refsb',
+    
+
+    printContributedVariables: true,
+    printPostContent: true,
+
+    silentResponse: false,
+
+    regexpFilterText: '$refsb',
+    regexpFilterExpression: 'master'
+   ]
+  ])
+ ])
+ 
+pipeline {
+    
+agent { label 'fargate-prod-jenkins-slave-nna'}
+
+options {
+     buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '5', daysToKeepStr: '', numToKeepStr: '15')
+     disableConcurrentBuilds()
+  		}
+    
+environment {
+		PROJECTID = "APX0156"
+		BUILD_NO="${BUILD_NUMBER}.0.0"
+		ENV="Prod"
+    }
+
+
+
+stages {
+
+	stage('Maven-PreBuild-1') {
+	 steps {
+      		script {
+                   	sh "mvn -v "
+          
+           		NSLMaven.MavenBuildStep(
+            			action: 'setmvnconfigfile',
+            			config_file_id: "${PROJECTID}"
+          			) 
+   			}
+      		}
+	}
+
+	
+	stage('Maven-Build') {
+	 steps {
+		script {
+             		NSLMaven.MavenBuildStep(
+            			action: 'build',
+            			command: 'install',
+                        config_file_id: "${PROJECTID}",
+            			arguments: '-f pom.xml -Dmaven.test.skip=true'
+          			)
+ 			}
+	      }
+
+	}
+    
+	stage('Sonar-Scan') {
+	 steps {
+		script {
+             		NSLSonar.SonarStepScan(
+            			scanType: 'maven',
+            			config_file_id: "${PROJECTID}",
+                        projectName: '"""OwnerService EAP"""',
+                        projectKey: 'APX0156',
+                        additionalArgs: '-Dsonar.projectVersion=0.0.1-SNAPSHOT -Dsonar.java.binaries=ejb/target/classes'                                			
+          			)
+ 			}
+	      }
+
+	}    
+
+
+    
+    stage('Maven-Deploy') {
+	 steps {
+		script {
+             		NSLMaven.MavenBuildStep(
+            			action: 'deploy',
+                        config_file_id: "${PROJECTID}",
+						artifact_file: "ear/target/NNAOwnerService.ear",
+                        skipTests: "true",
+						groupId: "${ENV}.com.nna.NNAOwnerService", 
+						artifactId: "NNAOwnerService",
+						packaging: "ear", 
+						version: "${BUILD_NO}", 
+						generatePom: "false"
+          			)
+ 			}
+	      }
+	}
+	
+
+	
+
+   }
+}

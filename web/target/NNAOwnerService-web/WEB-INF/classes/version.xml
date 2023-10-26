@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<version>
+	<Sprint>51</Sprint>
+	<ChangeDateTime>23-FEB-2017 @11.36 AM CST</ChangeDateTime>
+	<ChangedBy>Srinath Sriram</ChangedBy>
+	<Changes>Ownership management - PreferredDealer Changes</Changes>
+	<Sprint>50</Sprint>
+	<ChangeDateTime>27-JAN-2017 @03.36 AM CST</ChangeDateTime>
+	<ChangedBy>Mounika Policepatel</ChangedBy>
+	<Changes>Proof Of Ownership API</Changes>
+	<Sprint>47</Sprint>
+	<ChangeDateTime>07-DEC-2016 @03.36 AM CST</ChangeDateTime>
+	<ChangedBy>Mounika Policepatel</ChangedBy>
+	<Changes>Recall Service API</Changes>
+	<ChangeDateTime>24-NOV-2016 @12.36 PM CST</ChangeDateTime>
+	<ChangedBy>Vinodhini</ChangedBy>
+	<Changes>Change Password Validate Data change</Changes>
+	<Sprint>45</Sprint>
+	<ChangeDateTime>24-OCT-2016 @6.40 AM CST</ChangeDateTime>
+	<ChangedBy>Vinodhini</ChangedBy>
+	<Changes>Get vehicle Specification</Changes>
+	<ChangeDateTime>23-OCT-2016 @11.30PM CST</ChangeDateTime>
+	<ChangedBy>Vinodhini</ChangedBy>
+	<Changes>Get vehicle Specification</Changes>
+	<ChangeDateTime>21-OCT-2016 @10.25AM CST</ChangeDateTime>
+	<ChangedBy>Monika</ChangedBy>
+	<Changes>Get vehicle Specification</Changes>
+	<ChangeDateTime>18-OCT-2016 @9.25PM CST</ChangeDateTime>
+	<ChangedBy>Vinodhini</ChangedBy>
+	<Changes>Update Password in user account update service</Changes>
+	<ChangeDateTime>18-OCT-2016 @5.30PM CST</ChangeDateTime>
+	<ChangedBy>Monika</ChangedBy>
+	<Changes>State key error handling in multichannel API</Changes>
+	<ChangeDateTime>18-OCT-2016 @9.30AM CST</ChangeDateTime>
+	<ChangedBy>Vinodhini</ChangedBy>
+	<Changes>Update Password in user account update service</Changes>
+</version>
